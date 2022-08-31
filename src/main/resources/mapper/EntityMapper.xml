@@ -7,11 +7,20 @@
     <insert id="insert">
         insert into test_mybatis_insert(date, month, name, domain, code, number, type, province, count, level, model, address,
                                         price, remark)
-        values (#{})
+        values (#{entity.date}, #{entity.month}, #{entity.name}, #{entity.domain}, #{entity.code}, #{entity.number},
+                #{entity.type}, #{entity.province}, #{entity.count}, #{entity.level}, #{entity.model}, #{entity.address},
+                #{entity.price}, #{entity.remark})
     </insert>
 
     <insert id="insertList">
-
+        insert into test_mybatis_insert(date, month, name, domain, code, number, type, province, count, level, model, address,
+                                        price, remark)
+        values
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            (#{entity.date}, #{entity.month}, #{entity.name}, #{entity.domain}, #{entity.code}, #{entity.number},
+            #{entity.type}, #{entity.province}, #{entity.count}, #{entity.level}, #{entity.model}, #{entity.address},
+            #{entity.price}, #{entity.remark})
+        </foreach>
     </insert>
 
 </mapper>
