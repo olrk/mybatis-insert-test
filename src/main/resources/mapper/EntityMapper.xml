@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.olrk.study.mapper.EntityMapper">
+    <resultMap id="entityResultMap" type="com.olrk.study.entity.Entity">
+    </resultMap>
+
+    <insert id="insert">
+        insert into test_mybatis_insert(date, month, name, domain, code, number, type, province, count, level, model, address,
+                                        price, remark)
+        values (#{})
+    </insert>
+
+    <insert id="insertList">
+
+    </insert>
+
+</mapper>
