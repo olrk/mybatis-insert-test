@@ -16,10 +16,10 @@
         insert into test_mybatis_insert(date, month, name, domain, code, number, type, province, count, level, model, address,
                                         price, remark)
         values
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            (#{entity.date}, #{entity.month}, #{entity.name}, #{entity.domain}, #{entity.code}, #{entity.number},
-            #{entity.type}, #{entity.province}, #{entity.count}, #{entity.level}, #{entity.model}, #{entity.address},
-            #{entity.price}, #{entity.remark})
+        <foreach collection="list" item="item" separator=",">
+            (#{item.date}, #{item.month}, #{item.name}, #{item.domain}, #{item.code}, #{item.number},
+            #{item.type}, #{item.province}, #{item.count}, #{item.level}, #{item.model}, #{item.address},
+            #{item.price}, #{item.remark})
         </foreach>
     </insert>
 

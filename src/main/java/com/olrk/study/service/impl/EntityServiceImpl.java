@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author liaoruikai
@@ -24,22 +25,17 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public void insertForeach(List<Entity> list) {
-        entityDao.insertForeach(list);
+    public void insertForeach(Integer size, List<Entity> list) {
+        if (Objects.isNull(size) || size == 0) {
+            entityDao.insertForeach(list);
+        } else {
+            ListUtils.partition(list, size).forEach(entityDao::insertForeach);
+        }
     }
 
     @Override
-    public void insertBatch(List<Entity> list) {
-        entityDao.insertBatch(list);
+    public void insertBatch(Integer size, List<Entity> list) {
+        entityDao.insertBatch(size, list);
     }
 
-    @Override
-    public void insertSplitForeach(List<Entity> list) {
-        ListUtils.partition(list, 1000).forEach(entityDao::insertForeach);
-    }
-
-    @Override
-    public void insertBatchSplitForeach(List<Entity> list) {
-        entityDao.insertBatchForeach(list);
-    }
 }

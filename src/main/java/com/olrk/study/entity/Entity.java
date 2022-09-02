@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author liaoruikai
@@ -49,11 +50,49 @@ public class Entity {
     private static final String REMARK =
             "日本作家和大学教授们，也专门召开了主题研讨会。在会上，他们谴责岸田文雄为安倍晋三举行国葬，是在侮辱人人平等的理念。而他却要让民众为他的无聊买单。";
 
+    static final List<Entity> _5000_ENTITY_LIST = new ArrayList<>();
+    static final List<Entity> _20000_ENTITY_LIST = new ArrayList<>();
     static final List<Entity> _50000_ENTITY_LIST = new ArrayList<>();
-    static final List<Entity> _100000_ENTITY_LIST = new ArrayList<>();
-    static final List<Entity> _500000_ENTITY_LIST = new ArrayList<>();
 
     static {
+        for (int i = 0; i < 5000; i++) {
+            _5000_ENTITY_LIST.add(Entity.builder()
+                    .date(DATE)
+                    .month(MONTH)
+                    .name(NAME)
+                    .domain(DOMAIN)
+                    .code(CODE)
+                    .number(NUMBER)
+                    .type(TYPE)
+                    .province(PROVINCE)
+                    .count(COUNT)
+                    .level(LEVEL)
+                    .model(MODEL)
+                    .address(ADDRESS)
+                    .price(PRICE)
+                    .remark(REMARK)
+                    .build());
+        }
+
+        for (int i = 0; i < 20000; i++) {
+            _20000_ENTITY_LIST.add(Entity.builder()
+                    .date(DATE)
+                    .month(MONTH)
+                    .name(NAME)
+                    .domain(DOMAIN)
+                    .code(CODE)
+                    .number(NUMBER)
+                    .type(TYPE)
+                    .province(PROVINCE)
+                    .count(COUNT)
+                    .level(LEVEL)
+                    .model(MODEL)
+                    .address(ADDRESS)
+                    .price(PRICE)
+                    .remark(REMARK)
+                    .build());
+        }
+
         for (int i = 0; i < 50000; i++) {
             _50000_ENTITY_LIST.add(Entity.builder()
                     .date(DATE)
@@ -73,64 +112,31 @@ public class Entity {
                     .build());
         }
 
-        for (int i = 0; i < 100000; i++) {
-            _100000_ENTITY_LIST.add(Entity.builder()
-                    .date(DATE)
-                    .month(MONTH)
-                    .name(NAME)
-                    .domain(DOMAIN)
-                    .code(CODE)
-                    .number(NUMBER)
-                    .type(TYPE)
-                    .province(PROVINCE)
-                    .count(COUNT)
-                    .level(LEVEL)
-                    .model(MODEL)
-                    .address(ADDRESS)
-                    .price(PRICE)
-                    .remark(REMARK)
-                    .build());
-        }
+        System.out.println("初始化完成");
+    }
 
-        for (int i = 0; i < 500000; i++) {
-            _500000_ENTITY_LIST.add(Entity.builder()
-                    .date(DATE)
-                    .month(MONTH)
-                    .name(NAME)
-                    .domain(DOMAIN)
-                    .code(CODE)
-                    .number(NUMBER)
-                    .type(TYPE)
-                    .province(PROVINCE)
-                    .count(COUNT)
-                    .level(LEVEL)
-                    .model(MODEL)
-                    .address(ADDRESS)
-                    .price(PRICE)
-                    .remark(REMARK)
-                    .build());
-        }
+    public static List<Entity> get5000EntityList() {
+        return _5000_ENTITY_LIST;
+    }
+
+    public static List<Entity> get20000EntityList() {
+        return _20000_ENTITY_LIST;
     }
 
     public static List<Entity> get50000EntityList() {
         return _50000_ENTITY_LIST;
     }
 
-    public static List<Entity> get100000EntityList() {
-        return _100000_ENTITY_LIST;
-    }
-
-    public static List<Entity> get500000EntityList() {
-        return _500000_ENTITY_LIST;
-    }
-
-    public static List<Entity> getByType(int type) {
+    public static List<Entity> getByType(Integer type) {
+        if (Objects.isNull(type)) {
+            return get5000EntityList();
+        }
         if (1 == type) {
-            return get100000EntityList();
+            return get20000EntityList();
         } else if (2 == type) {
-            return get500000EntityList();
-        } else {
             return get50000EntityList();
+        } else {
+            return get5000EntityList();
         }
     }
 

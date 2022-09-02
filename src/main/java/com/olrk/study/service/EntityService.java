@@ -11,11 +11,7 @@ import java.util.List;
 public interface EntityService {
     void insert(List<Entity> list);
 
-    void insertForeach(List<Entity> byType);
+    void insertForeach(Integer size, List<Entity> byType);
 
-    void insertBatch(List<Entity> byType);
-
-    void insertSplitForeach(List<Entity> byType);
-
-    void insertBatchSplitForeach(List<Entity> byType);
+    void insertBatch(Integer size, List<Entity> byType);
 }

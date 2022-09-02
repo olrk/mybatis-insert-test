@@ -33,34 +33,17 @@ public class EntityController {
      */
     @PostMapping("/insertForeach")
     public int insertForeach(@RequestBody EntityInsertParam param) {
-        entityService.insertForeach(Entity.getByType(param.getType()));
+        entityService.insertForeach(param.getSize(), Entity.getByType(param.getType()));
         return 0;
     }
 
     /**
-     * batch循环单条插入
+     * batch插入
      */
     @PostMapping("/insertBatch")
     public int insertBatch(@RequestBody EntityInsertParam param) {
-        entityService.insertBatch(Entity.getByType(param.getType()));
+        entityService.insertBatch(param.getSize(), Entity.getByType(param.getType()));
         return 0;
     }
 
-    /**
-     * foreach分1000条一批插入
-     */
-    @PostMapping("/insertSplitForeach")
-    public int insertSplitForeach(@RequestBody EntityInsertParam param) {
-        entityService.insertSplitForeach(Entity.getByType(param.getType()));
-        return 0;
-    }
-
-    /**
-     * batch每1000条foreach插入
-     */
-    @PostMapping("/insertBatchSplitForeach")
-    public int insertBatchSplitForeach(@RequestBody EntityInsertParam param) {
-        entityService.insertBatchSplitForeach(Entity.getByType(param.getType()));
-        return 0;
-    }
 }

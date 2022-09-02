@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author liaoruikai
@@ -38,20 +39,16 @@ public class EntityDaoImpl implements EntityDao {
     }
 
     @Override
-    public void insertBatch(List<Entity> list) {
+    public void insertBatch(Integer size, List<Entity> list) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
             EntityMapper mapper = sqlSession.getMapper(EntityMapper.class);
-            list.forEach(mapper::insert);
+            if (Objects.isNull(size) || size == 0) {
+                list.forEach(mapper::insert);
+            } else {
+                ListUtils.partition(list, size).forEach(mapper::insertList);
+            }
             sqlSession.commit();
         }
     }
 
-    @Override
-    public void insertBatchForeach(List<Entity> list) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
-            EntityMapper mapper = sqlSession.getMapper(EntityMapper.class);
-            ListUtils.partition(list, 1000).forEach(mapper::insertList);
-            sqlSession.commit();
-        }
-    }
 }

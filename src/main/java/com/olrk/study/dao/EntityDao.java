@@ -13,7 +13,5 @@ public interface EntityDao {
 
     void insertForeach(List<Entity> list);
 
-    void insertBatch(List<Entity> list);
-
-    void insertBatchForeach(List<Entity> list);
+    void insertBatch(Integer size, List<Entity> list);
 }
