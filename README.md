@@ -89,7 +89,7 @@ batch 方式需要在数据源 url 配置中新增一个连接参数：rewriteBa
 
 由于 foreach 拼接 50000 条数据后的大小超过了我们设置的 max_allowed_packet，所以只能进行分批插入
 
-todo：插入图片
+![图片1](https://user-images.githubusercontent.com/53005753/188395340-4a8905e0-3cba-442e-9a4d-0ffc245937ce.png)
 
 | 插入方式                       | 平均耗时（ms） |
 | ------------------------------ | -------------- |
