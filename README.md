@@ -1,7 +1,18 @@
 # test-mybatis-insert
 测试大数据量下MyBatis不同插入方式的性能
 
-库表准备：
+## 环境说明
+
+* **MySQL**
+  5.7.38，max_allowed_packet：16777216
+* **SpringBoot**
+  2.6.11
+* **数据源**
+  Hikari
+* **mysql-connector-java**
+  8.0.30
+
+## 库表准备
 
 ```mysql
 create database study;
@@ -31,3 +42,65 @@ create table test_mybatis_insert
 ) engine = InnoDB
   charset = utf8mb4;
 ```
+
+## 测试说明
+
+* JMeter
+  * 程序提供 RestFul 接口供 JMeter 调用
+  * JMeter 有两个线程组，一是【预热组】，二是【测试组】
+  * 预热组：单线程，循环5次，每次启动 JVM 后启动，用来预热 JVM
+  * 测试组：单线程，循环20次，用来执行测试
+* MyBatis 插入方式
+  * 单条插入：遍历列表单条插入，每插入一条自动提交事务
+  * foreach 插入：使用 MyBatis 的 foreach 标签拼接列表元素，插入后自动提交事务
+  * batch 单条插入：遍历列表单条插入，全部插入完成后手动一次性提交全部事务，sqlSession 为 ExecutorType.BATCH
+  * 每 xxx 条 foreach 插入：对列表进行分批，xxx 条为一批，分批进行 foreach 插入，每一批插入后自动提交事务
+  * 每 xxx 条 batch foreach 插入：对列表进行分批，xxx 条为一批，分批进行 foreach 插入，全部批次插入完成后手动一次性提交全部事务，sqlSession 为 ExecutorType.BATCH
+
+## 测试结果
+
+### 5000条数据
+
+| 插入方式       | 平均耗时（ms） |
+| -------------- | -------------- |
+| 单条插入       | 146407         |
+| foreach 插入   | 518            |
+| batch 单条插入 | 343            |
+
+batch 方式需要在数据源 url 配置中新增一个连接参数：rewriteBatchedStatements=true，加上改参数后，再对前两种方式进行一次测试：
+
+| 插入方式     | 平均耗时（ms） |
+| ------------ | -------------- |
+| 单条插入     | 156567         |
+| foreach 插入 | 463            |
+
+鉴于上面的测试结果，下面的测试均在添加了 rewriteBatchedStatements=true 这个参数下进行，同时由于单条插入性能毫无疑问垫底，不再进行单条插入的测试。
+
+### 20000条数据
+
+| 插入方式                      | 平均耗时（ms） |
+| ----------------------------- | -------------- |
+| foreach 插入                  | 1759           |
+| batch 单条插入                | 1211           |
+| 每 1000 条 foreach 插入       | 2353           |
+| 每 1000 条 batch foreach 插入 | 2384           |
+
+### 50000条数据
+
+由于 foreach 拼接 50000 条数据后的大小超过了我们设置的 max_allowed_packet，所以只能进行分批插入
+
+todo：插入图片
+
+| 插入方式                       | 平均耗时（ms） |
+| ------------------------------ | -------------- |
+| batch 单条插入                 | 3022           |
+| 每 1000 条 foreach 插入        | 6176           |
+| 每 1000 条 batch foreach 插入  | 6120           |
+| 每 5000 条 foreach 插入        | 5098           |
+| 每 5000 条 batch foreach 插入  | 5110           |
+| 每 20000 条 foreach 插入       | 4394           |
+| 每 20000 条 batch foreach 插入 | 4429           |
+
+## 结论
+
+todo
